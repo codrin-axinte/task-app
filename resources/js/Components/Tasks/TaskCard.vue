@@ -3,7 +3,7 @@ import {ref} from "vue";
 import {router, useForm} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
 import {TrashIcon, ArrowPathIcon} from "@heroicons/vue/24/outline"
-import {CheckIcon, ArrowUturnLeftIcon, XMarkIcon, HandThumbUpIcon} from "@heroicons/vue/24/solid"
+import {CheckIcon, ArrowUturnLeftIcon, XMarkIcon, HandThumbUpIcon, ListBulletIcon} from "@heroicons/vue/24/solid"
 
 const props = defineProps({task: Object})
 
@@ -67,13 +67,14 @@ function restore() {
             />
 
             <div class="flex space-x-4">
-                <button type="submit" @click="save" title="Save" class="text-emerald-500 hover:text-emerald-400 transition">
+                <button type="submit" @click="save" title="Save"
+                        class="text-emerald-500 hover:text-emerald-400 transition">
                     <span class="sr-only">Save</span>
-                    <HandThumbUpIcon class="w-5 h-5" />
+                    <HandThumbUpIcon class="w-5 h-5"/>
                 </button>
                 <button type="reset" @click="cancel" title="Cancel" class="text-red-500 hover:text-red-400 transition">
                     <span class="sr-only">Cancel</span>
-                    <XMarkIcon class="w-5 h-5" />
+                    <XMarkIcon class="w-5 h-5"/>
                 </button>
             </div>
         </form>
@@ -81,9 +82,17 @@ function restore() {
 
         <div v-else class="p-6 flex justify-between space-x-16">
 
-            <span @click="edit" class="w-full h-full truncate" :class="{'line-through': !!task.completed_at}">
-                {{ task.title }}
-            </span>
+            <div class="flex flex-col">
+                    <span @click="edit" class="w-full h-full truncate" :class="{'line-through': !!task.completed_at}">
+                        {{ task.title }}
+                    </span>
+
+
+                <p v-if="task.children_count" class="text-sm inline-flex items-center space-x-1">
+                    <ListBulletIcon class="w-4 w-4"/>
+                    <span>{{ task.children_count }}</span>
+                </p>
+            </div>
 
             <div class="flex space-x-4">
                 <button v-if="!task.deleted_at" @click="toggleTask" class="hover:text-primary transition">

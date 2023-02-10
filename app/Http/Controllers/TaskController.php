@@ -30,6 +30,7 @@ class TaskController extends Controller
         $query = $user
             ->tasks()
             ->with(['children'])
+            ->withCount('children')
             ->onlyRoot();
 
         switch ($currentFilter) {
