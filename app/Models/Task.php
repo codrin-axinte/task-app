@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Priority;
-use Illuminate\Database\Eloquent\{
+use Illuminate\Database\Eloquent\{Casts\Attribute,
     Concerns\HasUuids,
     Factories\HasFactory,
     Model,
@@ -19,7 +19,6 @@ use Spatie\EloquentSortable\SortableTrait;
 class Task extends Model
 {
     use HasFactory, HasUuids, SoftDeletes, SortableTrait, Searchable;
-
 
     protected $fillable = [
         'title',

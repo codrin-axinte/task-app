@@ -4,31 +4,22 @@ import TaskList from "@/Components/Tasks/TaskList.vue";
 import {Head} from "@inertiajs/vue3";
 import {useForm, router, Link} from '@inertiajs/vue3'
 import {PlusIcon, ListBulletIcon} from "@heroicons/vue/20/solid"
+import useTasks from "@/Composables/useTasks";
+import useSwal from "@/Composables/useSwal";
+import useShakespeare from "@/Composables/useShakespeare";
 
 
-defineProps({tasks: Array, allowedFilters: Array, currentFilter: String})
+const props = defineProps({tasks: Object, allowedFilters: Array, currentFilter: String})
+
 
 const form = useForm({
     title: '',
     content: null
 });
 
-function createTask() {
-    form.post(route('tasks.index'), {
-        preserveScroll: true,
-        onSuccess: () => {
-            form.reset();
-        }
-    });
+const {create} = useTasks();
+const {createPlaceholder} = useShakespeare();
 
-}
-
-const placeholders = [
-    "What steps shall be taken to ensure success?",
-    "What's to be done?",
-    "What must be done, to thrive in this time?",
-    "What shall be done?"
-];
 
 </script>
 
@@ -44,7 +35,7 @@ const placeholders = [
         <div class="py-12">
             <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex-1 mx-auto  mb-10 max-w-xl">
-                    <form @submit.prevent="createTask">
+                    <form @submit.prevent="create(form)">
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                 <PlusIcon class="h-5 w-5 text-base-300 bg-primary rounded-lg" aria-hidden="true"/>
@@ -53,7 +44,7 @@ const placeholders = [
                             <input
                                 type="text"
                                 v-model="form.title"
-                                :placeholder="placeholders.random()"
+                                :placeholder="createPlaceholder()"
                                 :disabled="form.processing"
                                 class="pl-10 block w-full rounded-full bg-base-300 border-base-100 mb-2 outline-none focus:border-primary focus:ring-primary transition"
                             />
@@ -74,7 +65,7 @@ const placeholders = [
                         </Link>
                     </nav>
 
-                    <TaskList v-if="tasks.length > 0" :tasks="tasks"/>
+                    <TaskList v-if="tasks.data.length > 0" :tasks="tasks.data"/>
 
 
                     <div v-else type="button"

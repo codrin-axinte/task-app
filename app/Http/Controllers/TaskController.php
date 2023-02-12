@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -48,7 +49,9 @@ class TaskController extends Controller
                 break;
         }
 
-        $tasks = $query->latest()->get();
+        $tasks = TaskResource::collection($query->latest()->get());
+        //$tasks = $query->latest()->get();
+
 
 
         return Inertia::render(
