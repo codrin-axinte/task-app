@@ -1,16 +1,14 @@
 <script setup>
 import {ref} from "vue";
-import {router, useForm} from "@inertiajs/vue3";
-import InputError from "@/Components/InputError.vue";
+import {useForm} from "@inertiajs/vue3";
 import {TrashIcon, ArrowPathIcon, ClockIcon} from "@heroicons/vue/24/outline"
 import {CheckIcon, ArrowUturnLeftIcon, XMarkIcon, HandThumbUpIcon, ListBulletIcon} from "@heroicons/vue/24/solid"
 import useTasks from "@/Composables/useTasks";
-import useShakespeare from "@/Composables/useShakespeare";
+import QuickEdit from "@/Components/Tasks/QuickEdit.vue";
 
 const props = defineProps({task: Object})
 
 const isEditing = ref(false);
-const editInput = ref();
 
 const form = useForm({
     title: '',
@@ -18,19 +16,7 @@ const form = useForm({
 })
 
 const {toggle, restore, moveToTrash, update} = useTasks();
-const {deletedMessage} = useShakespeare();
 
-function save() {
-    let options = {
-        preserveScroll: true,
-        onSuccess: () => {
-            form.reset();
-            isEditing.value = false;
-        }
-    };
-
-    update(task, options);
-}
 
 function cancel() {
     isEditing.value = false;
@@ -39,7 +25,6 @@ function cancel() {
 function edit() {
     form.title = props.task.title;
     isEditing.value = true;
-    //editInput.value.value.focus();
 }
 
 
@@ -49,35 +34,11 @@ function edit() {
     <div
         class="bg-base-200 overflow-hidden border border-transparent hover:border-primary shadow-md hover:shadow-xl sm:rounded-lg transition">
 
-        <form v-if="isEditing" @submit.prevent="save" class="flex space-x-4 p-6">
-            <input
-                v-model="form.title"
-                name="content"
-                placeholder="What needs to be done?"
-                class="bg-transparent border-none outline-none ring:focus:outline-none focus:outline-none w-full"/>
-
-            <InputError
-                v-if="form.errors.title"
-                :message="form.errors.title"
-            />
-
-            <div class="flex space-x-4">
-                <button type="submit" @click="save" title="Save"
-                        class="text-emerald-500 hover:text-emerald-400 transition">
-                    <span class="sr-only">Save</span>
-                    <HandThumbUpIcon class="w-5 h-5"/>
-                </button>
-                <button type="reset" @click="cancel" title="Cancel" class="text-red-500 hover:text-red-400 transition">
-                    <span class="sr-only">Cancel</span>
-                    <XMarkIcon class="w-5 h-5"/>
-                </button>
-            </div>
-        </form>
-
+        <QuickEdit v-if="isEditing" :task="task" @cancel="cancel"/>
 
         <div v-else class="p-6 flex justify-between items-center space-x-16">
 
-            <div class="flex flex-col">
+            <div class="flex flex-col w-full">
                     <span @click="edit" class="w-full h-full truncate" :class="{'line-through': !!task.completed_at}">
                         {{ task.title }}
                     </span>
