@@ -22,9 +22,8 @@ class TaskFactory extends Factory
         return [
             'title' => Str::limit($this->faker->paragraph, 50, ''),
             'content' => $this->faker->paragraphs(random_int(0, 3), true),
-            'due_date' => $this->faker->dateTimeThisMonth(),
+            'due_date' => $this->faker->dateTimeBetween('yesterday', '+10 days'),
             'priority' => $this->faker->randomElement(Priority::values()),
-            //   'parent_id' => Task::factory(),
         ];
     }
 
@@ -35,5 +34,11 @@ class TaskFactory extends Factory
         ]);
     }
 
+    public function deleted(): TaskFactory
+    {
+        return $this->state([
+            'deleted_at' => now(),
+        ]);
+    }
 
 }

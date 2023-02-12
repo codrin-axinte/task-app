@@ -23,6 +23,9 @@ class Task extends Model
     protected $fillable = [
         'title',
         'content',
+        'due_date',
+        'priority',
+        'parent_id',
     ];
 
     protected $casts = [

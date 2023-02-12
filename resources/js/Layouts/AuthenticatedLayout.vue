@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue';
+import {provide, ref} from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -8,8 +8,14 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import {Link} from '@inertiajs/vue3';
 import {Squares2X2Icon, FolderIcon} from '@heroicons/vue/24/solid'
 import Sidebar from "@/Components/Sidebar.vue";
+import mitt from "mitt";
 
-const showingNavigationDropdown = ref(false);
+let showingNavigationDropdown = ref(false);
+
+
+const emitter = mitt();
+
+provide('bus', emitter);
 </script>
 
 <template>
@@ -36,10 +42,10 @@ const showingNavigationDropdown = ref(false);
                                     Dashboard
                                 </NavLink>
 
-                                <NavLink :href="''" :active="route().current('tasks')">
-                                    <FolderIcon class="w-4 h-4 mr-1"/>
-                                    Collections
-                                </NavLink>
+<!--                                <NavLink :href="''" :active="route().current('tasks')">-->
+<!--                                    <FolderIcon class="w-4 h-4 mr-1"/>-->
+<!--                                    Collections-->
+<!--                                </NavLink>-->
                             </div>
                         </div>
 
@@ -146,7 +152,7 @@ const showingNavigationDropdown = ref(false);
 
             <div class="flex w-full">
 
-                <Sidebar/>
+<!--                <Sidebar/>-->
 
                 <!-- Page Content -->
                 <main class="min-h-screen bg-base-300 text-base-content w-full">

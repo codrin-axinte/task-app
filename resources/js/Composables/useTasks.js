@@ -1,7 +1,7 @@
 import {router} from "@inertiajs/vue3";
 import useSwal from "@/Composables/useSwal";
 import useShakespeare from "@/Composables/useShakespeare";
-
+import axios from "axios";
 
 export default function useTasks() {
 
@@ -10,7 +10,13 @@ export default function useTasks() {
         createdMessage,
         deletedMessage,
         completedMessage,
+        updatedMessage
     } = useShakespeare();
+
+
+    function editForm(task, options = {}) {
+        return axios.get(route('tasks.edit', task));
+    }
 
     function create(form, options = {}) {
 
@@ -18,8 +24,6 @@ export default function useTasks() {
             preserveScroll: true,
             onSuccess() {
                 form.reset();
-                const {toast} = useSwal()
-
                 toast({
                     message: createdMessage(),
                     type: 'success'
@@ -30,7 +34,22 @@ export default function useTasks() {
     }
 
     function update(task, form, options = {}) {
-        return form.put(route('tasks.update', task), options)
+        return form.put(route('tasks.update', task), {
+            preserveScroll: true,
+            onError(e) {
+                toast({
+                    message: 'Something went wrong',
+                    type: 'error'
+                });
+            },
+            onSuccess() {
+                toast({
+                    message: updatedMessage(),
+                    type: 'success'
+                });
+            },
+            ...options
+        })
 
     }
 
@@ -49,12 +68,12 @@ export default function useTasks() {
     function toggle(task, options = {}) {
         return router.put(route('tasks.toggle', task), options, {
             onSuccess: () => {
-               if(!task.completed_at) {
-                   toast({
-                       message: completedMessage(),
-                       type: 'success'
-                   });
-               }
+                if (!task.completed_at) {
+                    toast({
+                        message: completedMessage(),
+                        type: 'success'
+                    });
+                }
             }
         });
     }
@@ -65,6 +84,7 @@ export default function useTasks() {
 
 
     return {
+        editForm,
         create,
         update,
         toggle,

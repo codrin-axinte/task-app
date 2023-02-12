@@ -14,6 +14,7 @@ class TaskSeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
+     * @throws \Exception
      */
     public function run()
     {
@@ -34,6 +35,7 @@ class TaskSeeder extends Seeder
             );
 
 
-        Task::factory()->for($user, 'user')->completed()->count(1)->create();
+        Task::factory()->for($user, 'user')->completed()->count(random_int(1, 3))->create();
+        Task::factory()->for($user, 'user')->deleted()->count(random_int(1,3))->create();
     }
 }

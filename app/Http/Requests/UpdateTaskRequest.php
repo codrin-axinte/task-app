@@ -11,9 +11,9 @@ class UpdateTaskRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', $this->task);
     }
 
     /**
@@ -24,8 +24,10 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
+            'title' => ['required', 'string', 'max:80'],
             'content' => ['nullable', 'string'],
+            'due_date' => ['nullable', 'date'],
+            'parent_id' => ['nullable', 'exists:tasks,id'],
         ];
     }
 }

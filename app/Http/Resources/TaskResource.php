@@ -20,7 +20,7 @@ class TaskResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'children' => $this->whenLoaded('children', fn() => TaskResource::collection($this->children)),
-            'children_count' => $this->whenLoaded('childrean', fn() => $this->children_count),
+            'children_count' => $this->whenLoaded('children', fn() => $this->children_count),
             'parent' => $this->whenLoaded('parent', fn() => TaskResource::make($this->parent)),
             'completed_at' => $this->completed_at,
             'deleted_at' => $this->deleted_at,
@@ -41,15 +41,19 @@ class TaskResource extends JsonResource
         $time = $dueDate?->format('h:i');
         $dueDays = $dueDate?->diffInDays(now());
 
+        if ($dueDate->isPast()) {
+            return $dueDate?->diffForHumans();
+        }
+
         if ($dueDate?->isToday()) {
             return 'Today at ' . $time;
         }
 
-        if ($dueDays <= 0) {
-            return $dueDate?->diffForHumans();
+        if ($dueDays === 1) {
+            return 'Tomorrow at ' . $time;
         }
 
-        if ($dueDays < 6) {
+        if ($dueDays < 4) {
             return $dueDate?->dayName . ' at ' . $time;
         }
 

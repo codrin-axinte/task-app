@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if (auth()->guest()) {
+            auth()->loginUsingId(1);
+        }
     }
 }

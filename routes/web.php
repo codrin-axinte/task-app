@@ -11,6 +11,7 @@ Route::redirect('/dashboard', '/tasks')->name('dashboard');
 Route::middleware('auth')->group(function () {
 
     Route::resource('tasks', \App\Http\Controllers\TaskController::class)
+        ->except(['crate', 'show'])
         ->withTrashed(['destroy']);
 
 

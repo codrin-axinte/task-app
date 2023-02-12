@@ -2,11 +2,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import TaskList from "@/Components/Tasks/TaskList.vue";
 import {Head} from "@inertiajs/vue3";
-import {useForm, router, Link} from '@inertiajs/vue3'
+import {useForm, Link} from '@inertiajs/vue3'
 import {PlusIcon, ListBulletIcon} from "@heroicons/vue/20/solid"
 import useTasks from "@/Composables/useTasks";
-import useSwal from "@/Composables/useSwal";
 import useShakespeare from "@/Composables/useShakespeare";
+import EditSliderOver from "@/Components/Tasks/EditSliderOver.vue";
 
 
 const props = defineProps({tasks: Object, allowedFilters: Array, currentFilter: String})
@@ -81,6 +81,7 @@ const {createPlaceholder} = useShakespeare();
             </div>
         </div>
 
+        <EditSliderOver/>
     </AuthenticatedLayout>
 </template>
 

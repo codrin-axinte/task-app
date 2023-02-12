@@ -1,18 +1,18 @@
 <script setup>
-import {ref} from "vue";
+import {ref, inject} from "vue";
 import {useForm} from "@inertiajs/vue3";
-import {TrashIcon, ArrowPathIcon, ClockIcon} from "@heroicons/vue/24/outline"
-import {CheckIcon, ArrowUturnLeftIcon, XMarkIcon, HandThumbUpIcon, ListBulletIcon} from "@heroicons/vue/24/solid"
+import {TrashIcon, ArrowPathIcon, PencilIcon, ClockIcon} from "@heroicons/vue/24/outline"
+import {CheckIcon, ArrowUturnLeftIcon, ListBulletIcon} from "@heroicons/vue/24/solid"
 import useTasks from "@/Composables/useTasks";
 import QuickEdit from "@/Components/Tasks/QuickEdit.vue";
 
 const props = defineProps({task: Object})
 
 const isEditing = ref(false);
+const emitter = inject('bus');
 
 const form = useForm({
     title: '',
-    content: null,
 })
 
 const {toggle, restore, moveToTrash, update} = useTasks();
@@ -22,12 +22,15 @@ function cancel() {
     isEditing.value = false;
 }
 
-function edit() {
+function quickEdit() {
     form.title = props.task.title;
     isEditing.value = true;
 }
 
 
+function edit() {
+    emitter.emit('task:edit', props.task.id);
+}
 </script>
 
 <template>
@@ -36,14 +39,15 @@ function edit() {
 
         <QuickEdit v-if="isEditing" :task="task" @cancel="cancel"/>
 
-        <div v-else class="p-6 flex justify-between items-center space-x-16">
+        <div v-else class="p-6 flex justify-between items-center space-x-4">
 
             <div class="flex flex-col w-full">
-                    <span @click="edit" class="w-full h-full truncate" :class="{'line-through': !!task.completed_at}">
+                    <span @click="quickEdit" class="w-full h-full truncate"
+                          :class="{'line-through': !!task.completed_at}">
                         {{ task.title }}
                     </span>
 
-                <div class="text-gray-400">
+                <div class="flex space-x-2 text-gray-400">
                     <p v-if="task.children_count" class="text-sm inline-flex items-center space-x-1">
                         <ListBulletIcon class="w-4 w-4"/>
                         <span>{{ task.children_count }}</span>
@@ -71,10 +75,14 @@ function edit() {
                 </button>
 
                 <button v-else @click="restore(task)" title="Restore" class="hover:text-primary transition">
-                    <span class="sr-only">
-                        Restore
-                    </span>
+                    <span class="sr-only">Restore</span>
                     <ArrowPathIcon class="w-5 h-5"/>
+                </button>
+
+
+                <button @click="edit" title="Edit" class="hover:text-primary transition">
+                    <span class="sr-only">Edit</span>
+                    <PencilIcon class="w-5 h-5"/>
                 </button>
 
                 <span class="text-gray-500">|</span>

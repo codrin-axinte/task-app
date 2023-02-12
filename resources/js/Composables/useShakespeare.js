@@ -18,6 +18,16 @@ export default function useShakespeare() {
         ].random();
     }
 
+    function updatedMessage() {
+        return [
+            "The task hath been altered, its path now amended.",
+            "The task hath been revised, its course now corrected.",
+            "The task hath been changed, its journey now redirected.",
+            "The task hath been updated, its destiny now refashioned.",
+        ].random();
+    }
+
+
     function deletedMessage() {
         return [
             'The task, it hath been deleted, its duties now are null and void.',
@@ -38,6 +48,7 @@ export default function useShakespeare() {
     return {
         createdMessage,
         createPlaceholder,
+        updatedMessage,
         deletedMessage,
         completedMessage
     }

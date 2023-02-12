@@ -4,6 +4,11 @@ import useTasks from "@/Composables/useTasks";
 import {ref, onMounted, inject} from 'vue'
 import InputError from "@/Components/InputError.vue";
 import {XMarkIcon, HandThumbUpIcon} from "@heroicons/vue/24/solid"
+import useSwal from "@/Composables/useSwal";
+import useShakespeare from "@/Composables/useShakespeare";
+
+const {toast} = useSwal();
+const {updatedMessage} = useShakespeare();
 
 const props = defineProps({
     task: Object
@@ -23,9 +28,13 @@ const form = useForm({
 function save() {
     let options = {
         preserveScroll: true,
-        onSuccess: () => {
+        onSuccess() {
             form.reset();
             emit('cancel');
+            toast({
+                message: updatedMessage(),
+                type: 'success'
+            });
         }
     };
 
