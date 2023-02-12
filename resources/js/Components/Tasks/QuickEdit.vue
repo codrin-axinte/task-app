@@ -44,6 +44,7 @@ onMounted(() => {
 <template>
     <form @submit.prevent="save" class="flex space-x-4 p-6">
         <input
+            @blur="emit('cancel')"
             v-model="form.title"
             name="content"
             ref="editInput"
