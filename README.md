@@ -16,4 +16,10 @@ php artisan migrate --seed
 npm install && npm run dev
 ```
 
+### Search Index
 
+If searching is not giving an error, then the index might be missing. Run this:
+
+```shell
+php artisan scout:index App\\Models\\Task
+```
