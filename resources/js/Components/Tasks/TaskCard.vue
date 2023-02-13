@@ -1,5 +1,5 @@
 <script setup>
-import {ref, inject} from "vue";
+import {ref, inject, onMounted} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import {TrashIcon, ArrowPathIcon, PencilIcon, ClockIcon} from "@heroicons/vue/24/outline"
 import {CheckIcon, ArrowUturnLeftIcon, ListBulletIcon} from "@heroicons/vue/24/solid"
@@ -8,8 +8,10 @@ import QuickEdit from "@/Components/Tasks/QuickEdit.vue";
 
 const props = defineProps({task: Object})
 
+
 const isEditing = ref(false);
 const emitter = inject('bus');
+
 
 const form = useForm({
     title: '',
@@ -31,9 +33,12 @@ function quickEdit() {
 function edit() {
     emitter.emit('task:edit', props.task.id);
 }
+
+
 </script>
 
 <template>
+
     <div
         class="bg-base-200 overflow-hidden border border-transparent hover:border-primary shadow-md hover:shadow-xl sm:rounded-lg transition">
 
@@ -64,8 +69,9 @@ function edit() {
 
             </div>
 
-            <div class="flex space-x-4">
-                <button v-if="!task.deleted_at" @click="toggle(task)" class="hover:text-primary transition">
+            <div class="flex space-x-3">
+                <button v-if="!task.deleted_at" @click="toggle(task)" title="Toggle"
+                        class="hover:text-primary transition">
                     <span class="sr-only">{{ task.completed_at ? 'Undo' : 'Complete' }}</span>
 
 
@@ -87,7 +93,8 @@ function edit() {
 
                 <span class="text-gray-500">|</span>
 
-                <button @click="moveToTrash(task)" title="Delete" class="text-red-500 hover:text-red-400 transition">
+                <button @click="moveToTrash(task)" title="Delete"
+                        class="text-red-500 hover:text-red-400 transition">
                     <span class="sr-only">Delete</span>
                     <TrashIcon class="w-5 h-5"/>
                 </button>

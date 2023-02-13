@@ -8,7 +8,7 @@ const props = defineProps({tasks: Array})
 
 
 <template>
-    <div class="flex flex-col space-y-4">
+    <TransitionGroup name="list" tag="div" class="flex flex-col space-y-4">
         <div v-for="task in tasks" :key="task.id" class="flex flex-col space-y-4">
             <TaskCard :task="task"/>
 
@@ -18,6 +18,6 @@ const props = defineProps({tasks: Array})
                 class="pl-6"
             />
         </div>
-    </div>
+    </TransitionGroup>
 </template>
 

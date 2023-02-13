@@ -56,6 +56,7 @@ export default function useTasks() {
     function moveToTrash(task, options = {}) {
         return router.delete(route('tasks.destroy', task), {
             ...options,
+            preserveScroll: true,
             onSuccess() {
                 toast({
                     message: deletedMessage(),
@@ -67,6 +68,7 @@ export default function useTasks() {
 
     function toggle(task, options = {}) {
         return router.put(route('tasks.toggle', task), options, {
+            preserveScroll: true,
             onSuccess: () => {
                 if (!task.completed_at) {
                     toast({
@@ -82,6 +84,9 @@ export default function useTasks() {
         return router.put(route('tasks.restore', task), options);
     }
 
+    function search(searchQuery, currentFilter) {
+        router.get(route('tasks.index'), {searchQuery: searchQuery, filter: currentFilter}, {preserveState: true});
+    }
 
     return {
         editForm,
@@ -89,6 +94,7 @@ export default function useTasks() {
         update,
         toggle,
         restore,
-        moveToTrash
+        moveToTrash,
+        search
     }
 }

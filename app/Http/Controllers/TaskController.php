@@ -26,41 +26,49 @@ class TaskController extends Controller
         $allowedFilters = ['all', 'pending', 'completed', 'trashed'];
 
         $validated = $request->validate([
-            'filter' => ['nullable', Rule::in($allowedFilters)]
+            'filter' => ['nullable', Rule::in($allowedFilters)],
+            'searchQuery' => ['nullable', 'string'],
         ]);
 
         $currentFilter = $validated['filter'] ?? 'pending';
+        $searchQuery = $validated['searchQuery'] ?? '';
 
         $user = $request->user();
 
-        $query = $user
-            ->tasks()
-            ->with(['children'])
-            ->withCount('children')
-            ->onlyRoot();
+        $results = Task::search($searchQuery)
+            ->query(function ($query) use ($user, $currentFilter) {
+                $query
+                    ->where('user_id', $user->id)
+                    ->with(['children'])
+                    ->withCount('children')
+                    ->onlyRoot();
 
-        switch ($currentFilter) {
-            case 'all';
-                $query->withTrashed();
-                break;
-            case 'trashed';
-                $query->onlyTrashed();
-                break;
-            case 'completed';
-                $query->completed();
-                break;
-            default:
-                $query->pending();
-                break;
-        }
+                switch ($currentFilter) {
+                    case 'all';
+                        $query->withTrashed();
+                        break;
+                    case 'trashed';
+                        $query->onlyTrashed();
+                        break;
+                    case 'completed';
+                        $query->completed();
+                        break;
+                    default:
+                        $query->pending();
+                        break;
+                }
 
-        $tasks = TaskResource::collection($query->latest()->get());
+                $query->latest()
+                    ->orderBy('due_date', 'asc');
+            })->get();
+
+        $tasks = TaskResource::collection($results);
         //$tasks = $query->latest()->get();
 
 
         return Inertia::render(
             'Tasks/Index',
-            compact('tasks', 'currentFilter', 'allowedFilters')
+            compact('tasks', 'currentFilter', 'allowedFilters', 'searchQuery')
         );
     }
 
@@ -129,9 +137,10 @@ class TaskController extends Controller
 
     public function restore($task): \Illuminate\Http\RedirectResponse
     {
-        $this->authorize('restore', $task);
 
         $task = Task::onlyTrashed()->findOrFail($task);
+
+        $this->authorize('restore', $task);
 
         $task->restore();
         $task->completed_at = null;

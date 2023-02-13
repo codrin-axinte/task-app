@@ -3,23 +3,38 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import TaskList from "@/Components/Tasks/TaskList.vue";
 import {Head} from "@inertiajs/vue3";
 import {useForm, Link} from '@inertiajs/vue3'
-import {PlusIcon, ListBulletIcon} from "@heroicons/vue/20/solid"
+import {PlusIcon, ListBulletIcon, XMarkIcon} from "@heroicons/vue/20/solid"
 import useTasks from "@/Composables/useTasks";
 import useShakespeare from "@/Composables/useShakespeare";
 import EditSliderOver from "@/Components/Tasks/EditSliderOver.vue";
+import {watch} from 'vue'
+import debounce from 'lodash.debounce'
+import {TransitionRoot} from '@headlessui/vue'
 
-
-const props = defineProps({tasks: Object, allowedFilters: Array, currentFilter: String})
+const props = defineProps({tasks: Object, allowedFilters: Array, currentFilter: String, searchQuery: String})
 
 
 const form = useForm({
     title: '',
-    content: null
 });
 
-const {create} = useTasks();
+
+const {create, search} = useTasks();
 const {createPlaceholder} = useShakespeare();
 
+//const searchTerm = ref('');
+
+const onSearch = debounce(() => {
+    search(form.title, props.currentFilter);
+}, 500)
+
+function clearForm() {
+    form.title = '';
+}
+
+watch(form, () => {
+    onSearch();
+});
 
 </script>
 
@@ -37,17 +52,47 @@ const {createPlaceholder} = useShakespeare();
                 <div class="flex-1 mx-auto  mb-10 max-w-xl">
                     <form @submit.prevent="create(form)">
                         <div class="relative mt-1 rounded-md shadow-sm">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <PlusIcon class="h-5 w-5 text-base-300 bg-primary rounded-lg" aria-hidden="true"/>
-                            </div>
+                            <TransitionRoot
+                                :show="form.title.length > 1"
+                                enter="transition-opacity duration-75"
+                                enter-from="opacity-0"
+                                enter-to="opacity-100"
+                                leave="transition-opacity duration-150"
+                                leave-from="opacity-100"
+                                leave-to="opacity-0"
+                            >
+
+                                <button type="button" @click="clearForm"
+                                        class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <XMarkIcon class="h-5 w-5 text-gray-400 hover:text-primary rounded-full"
+                                               aria-hidden="true"/>
+                                </button>
+
+                            </TransitionRoot>
 
                             <input
                                 type="text"
                                 v-model="form.title"
                                 :placeholder="createPlaceholder()"
                                 :disabled="form.processing"
-                                class="pl-10 block w-full rounded-full bg-base-300 border-base-100 mb-2 outline-none focus:border-primary focus:ring-primary transition"
+                                class="pr-10 pl-10 py-3 block w-full rounded-full bg-base-300 border-2 border-gray-700 mb-2 outline-none border-dashed focus:border focus:border-solid focus:border-primary focus:ring-primary transition"
                             />
+
+                            <TransitionRoot
+                                :show="form.title.length > 1"
+                                enter="transition-opacity duration-75"
+                                enter-from="opacity-0"
+                                enter-to="opacity-100"
+                                leave="transition-opacity duration-150"
+                                leave-from="opacity-100"
+                                leave-to="opacity-0"
+                            >
+
+                                <button type="submit"
+                                        class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <PlusIcon class="h-6 w-6 text-base-300 bg-primary rounded-full" aria-hidden="true"/>
+                                </button>
+                            </TransitionRoot>
                         </div>
 
 
@@ -64,6 +109,7 @@ const {createPlaceholder} = useShakespeare();
                             {{ filter }}
                         </Link>
                     </nav>
+
 
                     <TaskList v-if="tasks.data.length > 0" :tasks="tasks.data"/>
 

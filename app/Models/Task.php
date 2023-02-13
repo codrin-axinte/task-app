@@ -76,6 +76,7 @@ class Task extends Model
     {
         return [
             'id' => $this->id,
+            'title' => $this->title,
             'content' => $this->content,
         ];
     }

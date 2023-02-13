@@ -12,6 +12,7 @@ specifiers:
   flowbite: ^1.6.3
   laravel-vite-plugin: ^0.7.2
   lodash: ^4.17.19
+  lodash.debounce: ^4.0.8
   mitt: ^3.0.0
   postcss: ^8.4.18
   sweetalert2: ^11.7.1
@@ -24,6 +25,7 @@ dependencies:
   '@heroicons/vue': 2.0.15_vue@3.2.47
   '@sweetalert2/theme-dark': 5.0.15
   flowbite: 1.6.3
+  lodash.debounce: 4.0.8
   mitt: 3.0.0
   sweetalert2: 11.7.1
 
@@ -784,6 +786,10 @@ packages:
   /lodash.clonedeep/4.5.0:
     resolution: {integrity: sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==}
     dev: true
+
+  /lodash.debounce/4.0.8:
+    resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
+    dev: false
 
   /lodash.isequal/4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}

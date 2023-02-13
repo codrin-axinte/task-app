@@ -84,8 +84,6 @@ onUnmounted(() => {
 });
 
 
-
-
 </script>
 
 
@@ -148,37 +146,8 @@ onUnmounted(() => {
                                                                     :message="form.errors.title" class="mt-1"/>
 
                                                     </div>
-                                                    <div>
-                                                        <label for="content"
-                                                               class="block text-sm font-medium">Content</label>
-                                                        <div class="mt-1">
-                                                            <textarea id="content"
-                                                                      name="content"
-                                                                      rows="5"
-                                                                      v-model="form.content"
-                                                                      class="block w-full rounded-lg bg-base-300 border-base-100 shadow-sm focus:border-primary outline-none focus:ring-primary sm:text-sm transition"/>
-                                                        </div>
 
-                                                        <InputError
-                                                            v-if="form.errors.content"
-                                                            :message="form.errors.content"
-                                                            class="mt-1"
-                                                        />
-                                                    </div>
 
-                                                    <div>
-                                                        <label for="parent_id"
-                                                               class="block text-sm font-medium">Parent task</label>
-                                                        <div class="mt-1">
-                                                            <SuggestField
-                                                                :options="taskOptions"
-                                                                v-model="form.parent_id"
-                                                            />
-                                                        </div>
-
-                                                        <InputError v-if="form.errors.parent_id"
-                                                                    :message="form.errors.parent_id" class="mt-1"/>
-                                                    </div>
                                                     <div>
                                                         <label for="due_date"
                                                                class="block text-sm font-medium">Due date</label>
@@ -194,6 +163,39 @@ onUnmounted(() => {
                                                         <InputError v-if="form.errors.due_date"
                                                                     :message="form.errors.due_date" class="mt-1"/>
                                                     </div>
+
+                                                    <div>
+                                                        <label for="parent_id"
+                                                               class="block text-sm font-medium">Parent task</label>
+                                                        <div class="mt-1">
+                                                            <SuggestField
+                                                                :options="taskOptions"
+                                                                v-model="form.parent_id"
+                                                            />
+                                                        </div>
+
+                                                        <InputError v-if="form.errors.parent_id"
+                                                                    :message="form.errors.parent_id" class="mt-1"/>
+                                                    </div>
+
+
+                                                    <div>
+                                                        <label for="content"
+                                                               class="block text-sm font-medium">Content</label>
+                                                        <div class="mt-1">
+                                                            <textarea id="content"
+                                                                      name="content"
+                                                                      rows="10"
+                                                                      v-model="form.content"
+                                                                      class="block w-full rounded-lg bg-base-300 border-base-100 shadow-sm focus:border-primary outline-none focus:ring-primary sm:text-sm transition"/>
+                                                        </div>
+
+                                                        <InputError
+                                                            v-if="form.errors.content"
+                                                            :message="form.errors.content"
+                                                            class="mt-1"
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -202,12 +204,12 @@ onUnmounted(() => {
 
                                     <div class="flex flex-shrink-0 justify-end px-4 py-4">
                                         <button type="button"
-                                                class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition"
                                                 @click="close">
                                             Revoke
                                         </button>
                                         <button type="submit"
-                                                class="ml-4 inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                class="ml-4 inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition">
                                             Preserve
                                         </button>
                                     </div>
