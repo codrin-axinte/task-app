@@ -40,11 +40,11 @@ function edit() {
 <template>
 
     <div
-        class="bg-base-200 overflow-hidden border border-transparent hover:border-primary shadow-md hover:shadow-xl sm:rounded-lg transition">
+        class="bg-base-200 overflow-hidden border border-transparent hover:border-primary shadow-md hover:shadow-xl rounded-lg transition">
 
         <QuickEdit v-if="isEditing" :task="task" @cancel="cancel"/>
 
-        <div v-else class="p-6 flex justify-between items-center space-x-4">
+        <div v-else class="p-6 flex flex-col items-end sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
 
             <div class="flex flex-col w-full">
                     <span @click="quickEdit" class="w-full h-full truncate"

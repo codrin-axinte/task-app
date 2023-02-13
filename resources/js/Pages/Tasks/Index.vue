@@ -49,7 +49,7 @@ watch(form, () => {
 
         <div class="py-12">
             <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex-1 mx-auto  mb-10 max-w-xl">
+                <div class="flex-1 px-4 mx-auto mb-10 sm:px-0 sm:max-w-xl">
                     <form @submit.prevent="create(form)">
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <TransitionRoot
@@ -102,7 +102,7 @@ watch(form, () => {
                     </form>
                 </div>
 
-                <div class="flex-1 max-w-xl mx-auto">
+                <div class="flex-1 px-4 sm:px-0 sm:max-w-xl mx-auto">
                     <nav class="flex space-x-4 mb-4">
                         <Link v-for="(filter, key) in allowedFilters" :key="key" :href="route('tasks.index', {filter})"
                               :class="[currentFilter === filter ? 'text-primary'  : '', 'capitalize']">

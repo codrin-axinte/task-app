@@ -51,7 +51,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <form @submit.prevent="save" class="flex space-x-4 p-6">
+    <form @submit.prevent="save" class="flex flex-col space-y-2 items-end sm:flex-row sm:space-y-0 sm:space-x-4 p-6">
         <input
             @blur="emit('cancel')"
             v-model="form.title"
