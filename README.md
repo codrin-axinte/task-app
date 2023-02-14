@@ -18,13 +18,13 @@ npm install && npm run dev
 
 ### Search Index
 
-If searching is not giving an error, then the index might be missing. Run this:
-
 Add this to your .env
 ```.dotenv
 
 SCOUT_DRIVER=database
 ```
+
+If searching is not giving an error, then the index might be missing. Run this:
 
 ```shell
 php artisan scout:index App\\Models\\Task
